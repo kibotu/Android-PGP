@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.kibotu.pgp.MainActivity">
+    tools:context="net.kibotu.pgp.app.MainActivity">
 
 
 </android.support.constraint.ConstraintLayout>

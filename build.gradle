@@ -1,5 +1,12 @@
 buildscript {
+
     ext.kotlin_version = '1.2.20'
+
+    ext.compileSdkVer = 27
+    ext.buildToolsVer = '27.0.2'
+    ext.minSdkVer = 15
+    ext.targetSdkVer = 27
+
     repositories {
         google()
         jcenter()
@@ -14,9 +21,14 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4.1'
 }
