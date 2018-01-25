@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PGP Test</string>
+    <string name="encrypt">Encrypt</string>
+    <string name="decrypt">Decrypt</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
 </resources>
