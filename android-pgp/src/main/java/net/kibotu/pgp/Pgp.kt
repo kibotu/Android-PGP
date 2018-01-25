@@ -26,7 +26,7 @@ import java.util.*
 /**
  * Based on https://stackoverflow.com/a/33308732/1006741
  */
-public object Pgp {
+object Pgp {
 
     private const val KEY_RING_ID = "jan.rabe@kibotu.net"
 
