@@ -5,7 +5,7 @@
 
 Adds PGP encryption and decryption support.
 
-![Screenshot](https://raw.githubusercontent.com/kibotu/Android-PGP/master/screenshot.png) ![Screenshot](https://raw.githubusercontent.com/kibotu/Android-PGP/master/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/kibotu/Android-PGP/master/screenshot.png)
 
 
 ## How to use
