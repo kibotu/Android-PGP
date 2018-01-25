@@ -5,24 +5,27 @@
 
 Adds PGP encryption and decryption support.
 
+![Screenshot](https://raw.githubusercontent.com/kibotu/Android-PGP/master/screenshot.png) ![Screenshot](https://raw.githubusercontent.com/kibotu/Android-PGP/master/screenshot.png)
+
+
 ## How to use
 
-1.1 Generate a Key-Pair
+1.1 [Generate a Key-Pair](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L19-L21)
 
     val krgen = Pgp.generateKeyRingGenerator("password".toCharArray())
     val publicKey = Pgp.genPGPPublicKey(krgen)
     val privateKey = Pgp.genPGPPrivKey(krgen)
 
-1.2 or provide one
+1.2 or [provide one pair](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L47-L48)
 
     Pgp.setPublicKey("rsa.pub".openFromAssets())
     Pgp.setPrivateKey("rsa".openFromAssets())
 
-2 Encrypt
+2 [Encrypt](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L50)
 
     encrypted = Pgp.encrypt("my secret message")
 
-3 Decrypt
+3 [Decrypt](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L51)
 
     decrypted = Pgp.decrypt(encrypted, "password")
 
@@ -43,9 +46,6 @@ Adds PGP encryption and decryption support.
 - JDK8
 - Android Build Tools 27.0.2
 - Android SDK 27
-
-## How to use
-
 
 ## Contributors
 
