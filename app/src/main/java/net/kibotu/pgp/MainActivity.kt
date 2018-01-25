@@ -16,9 +16,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // val krgen = Pgp.generateKeyRingGenerator("password".toCharArray())
-        // Pgp.setPublicKey(Pgp.genPGPPublicKey(krgen))
-        // Pgp.setPrivateKey(Pgp.genPGPPrivKey(krgen))
+        val krgen = Pgp.generateKeyRingGenerator("password".toCharArray())
+        Pgp.setPublicKey(Pgp.genPGPPublicKey(krgen))
+        Pgp.setPrivateKey(Pgp.genPGPPrivKey(krgen))
 
         Pgp.setPublicKey("rsa.pub".openFromAssets())
         Pgp.setPrivateKey("rsa".openFromAssets())
