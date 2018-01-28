@@ -7,6 +7,18 @@ Adds PGP encryption and decryption support.
 
 ![Screenshot](https://raw.githubusercontent.com/kibotu/Android-PGP/master/screenshot.png)
 
+## How to install
+
+    repositories {
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+
+    dependencies {
+        implementation 'com.github.kibotu:android-pgp:-SNAPSHOT'
+    }
+
 
 ## How to use
 
@@ -28,10 +40,6 @@ Adds PGP encryption and decryption support.
 3 [Decrypt](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L51)
 
     decrypted = Pgp.decrypt(encrypted, "password")
-
-## How to install
-
-    implementation 'com.github.kibotu:android-pgp:-SNAPSHOT'
 
 ## How to build
 
