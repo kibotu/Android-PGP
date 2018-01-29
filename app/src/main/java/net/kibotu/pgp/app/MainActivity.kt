@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
         Pgp.setPublicKey(Pgp.genPGPPublicKey(krgen))
         Pgp.setPrivateKey(Pgp.genPGPPrivKey(krgen))
 
-        decrypted.setText("decrypted.json".openFromAssets())
-        encrypted.setText("encrypted.json".openFromAssets())
+        decrypted.setText("decrypted.json".stringFromAssets())
+        encrypted.setText("encrypted.json".stringFromAssets())
 
         encrypt.setOnClickListener {
             val decryptedText = decrypted.text.toString().trim()
@@ -44,27 +44,36 @@ class MainActivity : AppCompatActivity() {
 
     private fun encryptDecryptAssets() {
 
-        Pgp.setPublicKey("rsa.pub".openFromAssets())
-        Pgp.setPrivateKey("rsa".openFromAssets())
+        Pgp.setPublicKey("rsa.pub".stringFromAssets())
+        Pgp.setPrivateKey("rsa".stringFromAssets())
 
-        val encrypted = Pgp.encrypt("decrypted.json".openFromAssets())
-        val decrypted = Pgp.decrypt("encrypted.txt".openFromAssets(), "password")
+        val encrypted = Pgp.encrypt("decrypted.json".stringFromAssets())
+        val decrypted = Pgp.decrypt("encrypted.txt".stringFromAssets(), "password")
     }
 
     private fun share() {
+        share(decrypted.text.toString().trim() + "\n\n" + encrypted.text.toString().trim())
+    }
+
+    private fun share(message: String?) {
         val intent = Intent()
         intent.action = Intent.ACTION_SEND
-        intent.putExtra(Intent.EXTRA_TEXT, decrypted.text.toString().trim() + "\n\n" + encrypted.text.toString().trim())
+        intent.putExtra(Intent.EXTRA_TEXT, "" + message)
         intent.type = "text/plain"
         startActivity(Intent.createChooser(intent, "Save Data with:"))
     }
 
-    private fun String.openFromAssets(): String {
-        try {
-            return assets.open(this).bufferedReader().use { it.readText() }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return ""
+    private fun String.bytesFromAssets(): ByteArray? = try {
+        assets.open(this).use { ByteArray(it.available()).apply { it.read(this) } }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    private fun String.stringFromAssets(): String = try {
+        assets.open(this).bufferedReader().use { it.readText() }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
     }
 }

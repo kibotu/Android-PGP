@@ -72,20 +72,30 @@ object Pgp {
         return secretKey.extractPrivateKey(decryptor)
     }
 
+    /**
+     * @param privateKey Private Key in PGP format.
+     */
     @JvmStatic
     fun setPrivateKey(privateKey: String) {
         Pgp.privateKey = privateKey.toByteArray()
     }
 
+    /**
+     * @param privateKey Public Key in PGP format.
+     */
     @JvmStatic
     fun setPublicKey(publicKey: String) {
         Pgp.publicKey = publicKey.toByteArray()
     }
 
+    /**
+     * @param encrypted Encrypted message.
+     * @param password Password on PGP Key
+     * @return decrypted message
+     */
     @JvmStatic
     @Throws(Exception::class)
-    fun decrypt(encryptedText: String, password: String): String? {
-        val encrypted = encryptedText.toByteArray()
+    fun decrypt(encrypted: ByteArray, password: String): ByteArray? {
         var inputStream: InputStream = ByteArrayInputStream(encrypted)
         inputStream = PGPUtil.getDecoderStream(inputStream)
         val pgpF = PGPObjectFactory(inputStream, bcKeyFingerprintCalculator)
@@ -117,15 +127,29 @@ object Pgp {
             }
             val returnBytes = out.toByteArray()
             out.close()
-            return String(returnBytes)
+            return returnBytes
         }
         return null
     }
 
+    /**
+     * @param encryptedText Encrypted message.
+     * @param password Password on PGP Key
+     * @return decrypted message
+     */
+    @JvmStatic
+    @Throws(Exception::class)
+    fun decrypt(encryptedText: String, password: String): String? {
+        return decrypt(encryptedText.toByteArray(), password)?.let { return String(it) }
+    }
+
+    /**
+     * @param msg Plain message.
+     * @return PGP encrypted message.
+     */
     @JvmStatic
     @Throws(IOException::class, PGPException::class)
-    fun encrypt(msgText: String): String {
-        val clearData = msgText.toByteArray()
+    fun encrypt(msg: ByteArray): ByteArray? {
         val pgpPublicKeyRing = pgpPublicKeyRing
         val encKey = getPublicKey(pgpPublicKeyRing)
         val encOut = ByteArrayOutputStream()
@@ -134,8 +158,8 @@ object Pgp {
         val comData = PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP)
         val cos = comData.open(bOut)
         val lData = PGPLiteralDataGenerator()
-        val pOut = lData.open(cos, PGPLiteralData.BINARY, PGPLiteralData.CONSOLE, clearData.size.toLong(), Date())
-        pOut.write(clearData)
+        val pOut = lData.open(cos, PGPLiteralData.BINARY, PGPLiteralData.CONSOLE, msg.size.toLong(), Date())
+        pOut.write(msg)
         lData.close()
         comData.close()
         val encGen = PGPEncryptedDataGenerator(
@@ -149,7 +173,16 @@ object Pgp {
             cOut.close()
         }
         out.close()
-        return String(encOut.toByteArray())
+        return encOut.toByteArray()
+    }
+    /**
+     * @param msg Plain message.
+     * @return PGP encrypted message.
+     */
+    @JvmStatic
+    @Throws(IOException::class, PGPException::class)
+    fun encrypt(msgText: String): String? {
+        return encrypt(msgText.toByteArray())?.let { return String(it) }
     }
 
     @JvmStatic
@@ -176,6 +209,10 @@ object Pgp {
         return keyRingGen
     }
 
+    /**
+     * @param krgen PGP Key Ring Generator
+     * @return Public Key in PGP format.
+     */
     @JvmStatic
     @Throws(IOException::class)
     fun genPGPPublicKey(krgen: PGPKeyRingGenerator): String {
@@ -187,6 +224,10 @@ object Pgp {
         return String(baosPkr.toByteArray(), Charset.defaultCharset())
     }
 
+    /**
+     * @param krgen PGP Key Ring Generator
+     * @return Private Key in PGP format.
+     */
     @JvmStatic
     @Throws(IOException::class)
     fun genPGPPrivKey(krgen: PGPKeyRingGenerator): String {
