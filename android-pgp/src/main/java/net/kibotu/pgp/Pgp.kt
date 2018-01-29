@@ -36,6 +36,7 @@ object Pgp {
 
     private var publicKey: ByteArray? = null
     private var privateKey: ByteArray? = null
+    var strength: Int = 2048
 
     private val bcKeyFingerprintCalculator = BcKeyFingerprintCalculator()
 
@@ -119,15 +120,16 @@ object Pgp {
             pgpFact = PGPObjectFactory(cData.dataStream, bcKeyFingerprintCalculator)
             val ld = pgpFact.nextObject() as PGPLiteralData
             val unc = ld.inputStream
-            val out = ByteArrayOutputStream()
-            var ch = 0
-            while (ch >= 0) {
-                ch = unc.read()
-                out.write(ch)
+
+            ByteArrayOutputStream().use {
+                val buffer = ByteArray(0xFFFF)
+                while (true) {
+                    val r = unc.read(buffer)
+                    if (r == -1) break
+                    it.write(buffer, 0, r)
+                }
+                return it.toByteArray()
             }
-            val returnBytes = out.toByteArray()
-            out.close()
-            return returnBytes
         }
         return null
     }
@@ -143,6 +145,7 @@ object Pgp {
         return decrypt(encryptedText.toByteArray(), password)?.let { return String(it) }
     }
 
+
     /**
      * @param msg Plain message.
      * @return PGP encrypted message.
@@ -150,7 +153,6 @@ object Pgp {
     @JvmStatic
     @Throws(IOException::class, PGPException::class)
     fun encrypt(msg: ByteArray): ByteArray? {
-        val pgpPublicKeyRing = pgpPublicKeyRing
         val encKey = getPublicKey(pgpPublicKeyRing)
         val encOut = ByteArrayOutputStream()
         val out = ArmoredOutputStream(encOut)
@@ -162,9 +164,7 @@ object Pgp {
         pOut.write(msg)
         lData.close()
         comData.close()
-        val encGen = PGPEncryptedDataGenerator(
-                JcePGPDataEncryptorBuilder(PGPEncryptedData.AES_256).setWithIntegrityPacket(true).setSecureRandom(
-                        SecureRandom()).setProvider(BouncyCastleProvider.PROVIDER_NAME))
+        val encGen = PGPEncryptedDataGenerator(JcePGPDataEncryptorBuilder(PGPEncryptedData.AES_256).setWithIntegrityPacket(true).setSecureRandom(SecureRandom()).setProvider(BouncyCastleProvider.PROVIDER_NAME))
         if (encKey != null) {
             encGen.addMethod(JcePublicKeyKeyEncryptionMethodGenerator(encKey).setProvider(BouncyCastleProvider.PROVIDER_NAME))
             val bytes = bOut.toByteArray()
@@ -175,6 +175,7 @@ object Pgp {
         out.close()
         return encOut.toByteArray()
     }
+
     /**
      * @param msg Plain message.
      * @return PGP encrypted message.
@@ -189,7 +190,7 @@ object Pgp {
     @Throws(PGPException::class)
     fun generateKeyRingGenerator(pass: CharArray): PGPKeyRingGenerator {
         val kpg = RSAKeyPairGenerator()
-        kpg.init(RSAKeyGenerationParameters(BigInteger.valueOf(0x10001), SecureRandom(), 2048, 12))
+        kpg.init(RSAKeyGenerationParameters(BigInteger.valueOf(0x10001), SecureRandom(), strength, 12))
         val rsakp_sign = BcPGPKeyPair(PGPPublicKey.RSA_SIGN, kpg.generateKeyPair(), Date())
         val rsakp_enc = BcPGPKeyPair(PGPPublicKey.RSA_ENCRYPT, kpg.generateKeyPair(), Date())
         val signhashgen = PGPSignatureSubpacketGenerator()

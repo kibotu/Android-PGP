@@ -63,14 +63,14 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(intent, "Save Data with:"))
     }
 
-    private fun String.bytesFromAssets(): ByteArray? = try {
+    fun String.bytesFromAssets(): ByteArray? = try {
         assets.open(this).use { ByteArray(it.available()).apply { it.read(this) } }
     } catch (e: Exception) {
         e.printStackTrace()
         null
     }
 
-    private fun String.stringFromAssets(): String = try {
+    fun String.stringFromAssets(): String = try {
         assets.open(this).bufferedReader().use { it.readText() }
     } catch (e: Exception) {
         e.printStackTrace()
