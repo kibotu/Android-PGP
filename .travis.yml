@@ -31,11 +31,10 @@ android:
     - android-sdk-license-.+
 
 before_install:
+  - "sudo unzip -j -o jce_policy/jce_policy-8.zip *.jar -d $JAVA_HOME/jre/lib/security"
+  - "ls -la $JAVA_HOME/jre/lib/security"
   - git submodule update --init --recursive
   - chmod u+x gradlew
-  - "sudo unzip -j -o zuul-data/src/test/resources/UnlimitedJCEPolicyJDK7.zip *.jar -d $JAVA_HOME/jre/lib/security"
-  - "ls -la $JAVA_HOME/jre/lib/security"
-  #- "curl -L --cookie 'oraclelicense=accept-securebackup-cookie;'  http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip -o /tmp/policy.zip && sudo unzip -j -o /tmp/policy.zip *.jar -d `jdk_switcher home oraclejdk8`/jre/lib/security && rm /tmp/policy.zip"
 
 # https://github.com/simi/travis-jce-unlimited-test/blob/master/.travis.yml
 script: "javac TestPolicyFiles.java && java TestPolicyFiles"
