@@ -1,6 +1,9 @@
 language: android
 jdk: oraclejdk8
 
+dist: trusty
+sudo: required
+
 git:
   depth: 10000
 
