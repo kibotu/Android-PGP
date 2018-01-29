@@ -12,11 +12,14 @@ import java.security.Security
 
 class EncryptionTest : BaseTest() {
 
+    init {
+        // https://stackoverflow.com/a/46857694/1006741
+        Security.setProperty("crypto.policy", "unlimited")
+    }
+
     @Before
     fun setSecurityPolicy() {
 
-        // https://stackoverflow.com/a/46857694/1006741
-        Security.setProperty("crypto.policy", "unlimited")
 
         Pgp.strength = 2048
     }

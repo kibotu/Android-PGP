@@ -36,6 +36,7 @@ android {
                 outputs.upToDateWhen { false }
                 showStandardStreams = true
             }
+            ignoreFailures = true
         }
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources = true
