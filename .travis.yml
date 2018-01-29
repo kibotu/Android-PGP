@@ -4,6 +4,10 @@ jdk: oraclejdk8
 dist: trusty
 sudo: required
 
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 git:
   depth: 10000
 
@@ -31,9 +35,6 @@ android:
     - android-sdk-license-.+
 
 before_install:
-  - brew tap caskroom/versions
-  - brew cask install java8
-
   # https://github.com/simi/travis-jce-unlimited-test/blob/master/.travis.yml
   - "curl -L --cookie 'oraclelicense=accept-securebackup-cookie;'  http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip -o /tmp/policy.zip && sudo unzip -j -o /tmp/policy.zip *.jar -d `jdk_switcher home oraclejdk8`/jre/lib/security && rm /tmp/policy.zip"
   - git submodule update --init --recursive
