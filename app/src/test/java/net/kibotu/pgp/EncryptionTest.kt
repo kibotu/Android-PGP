@@ -54,9 +54,6 @@ class EncryptionTest : BaseTest() {
         val privateKey = Pgp.genPGPPrivKey(krg)
         val publicKey = Pgp.genPGPPublicKey(krg)
 
-        System.out.println(privateKey)
-        System.out.println(publicKey)
-
         assertThat(privateKey).isNotEmpty()
         assertThat(publicKey).isNotEmpty()
 
