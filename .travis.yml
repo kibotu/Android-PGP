@@ -30,10 +30,9 @@ android:
 before_install:
   - git submodule update --init --recursive
   - chmod u+x gradlew
+  # https://github.com/simi/travis-jce-unlimited-test/blob/master/.travis.yml
   - "curl -L --cookie 'oraclelicense=accept-securebackup-cookie;'  http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip -o /tmp/policy.zip && sudo unzip -j -o /tmp/policy.zip *.jar -d `jdk_switcher home oraclejdk8`/jre/lib/security && rm /tmp/policy.zip"
 
-# https://github.com/simi/travis-jce-unlimited-test/blob/master/.travis.yml
-script: "javac TestPolicyFiles.java && java TestPolicyFiles"
 
   - android list sdk --no-ui --all --extended
   - android list targets
