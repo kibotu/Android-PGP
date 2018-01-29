@@ -36,8 +36,6 @@ before_install:
   - git submodule update --init --recursive
   - chmod u+x gradlew
 
-# https://github.com/simi/travis-jce-unlimited-test/blob/master/.travis.yml
-script: "javac TestPolicyFiles.java && java TestPolicyFiles"
 
   - android list sdk --no-ui --all --extended
   - android list targets
@@ -48,6 +46,8 @@ install: true
 script:
   - ./gradlew -v
   - ./gradlew clean build --stacktrace
+  # https://github.com/simi/travis-jce-unlimited-test/blob/master/.travis.yml
+  - "javac TestPolicyFiles.java && java TestPolicyFiles"
 
 after_failure: true
 
