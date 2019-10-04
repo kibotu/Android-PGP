@@ -9,51 +9,72 @@ Adds PGP encryption and decryption support.
 
 ## How to install
 
-    repositories {
-        maven {
-            url "https://jitpack.io"
-        }
+```groovy
+repositories {
+    maven {
+        url "https://jitpack.io"
     }
+}
 
-    dependencies {
-        implementation 'com.github.kibotu:android-pgp:-SNAPSHOT'
-    }
-
+dependencies {
+    implementation 'com.github.kibotu:android-pgp:-SNAPSHOT'
+}
+```
 
 ## How to use
 
 1.1 [Generate a Key-Pair](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L19-L21)
 
-    val krgen = Pgp.generateKeyRingGenerator("password".toCharArray())
-    val publicKey = Pgp.genPGPPublicKey(krgen)
-    val privateKey = Pgp.genPGPPrivKey(krgen)
+```kotlin
+val krgen = Pgp.generateKeyRingGenerator("password".toCharArray())
+val publicKey = Pgp.genPGPPublicKey(krgen)
+val privateKey = Pgp.genPGPPrivKey(krgen)
+```
 
 1.2 or [provide one pair](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L47-L48)
 
-    Pgp.setPublicKey("rsa.pub".openFromAssets())
-    Pgp.setPrivateKey("rsa".openFromAssets())
+```kotlin
+Pgp.setPublicKey("rsa.pub".openFromAssets())
+Pgp.setPrivateKey("rsa".openFromAssets())
+```
 
 2 [Encrypt](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L50)
 
-    encrypted = Pgp.encrypt("my secret message")
+```kotlin
+encrypted = Pgp.encrypt("my secret message")
+```
 
 3 [Decrypt](https://github.com/kibotu/Android-PGP/blob/master/app/src/main/java/net/kibotu/pgp/app/MainActivity.kt#L51)
 
-    decrypted = Pgp.decrypt(encrypted, "password")
+```kotlin
+decrypted = Pgp.decrypt(encrypted, "password")
+```
 
 ## How to build
 
-    graldew clean build
+```bash
+graldew clean build
+```
 
 ### CI
 
-    gradlew clean assembleRelease test javadoc
+```bash
+gradlew clean assembleRelease test javadoc
+```
 
 #### Build Requirements
 
 - JDK8
 - Android Build Tools 27.0.2
 - Android SDK 27
+
+### Notes
+
+Follow me on Twitter: [@wolkenschauer](https://twitter.com/wolkenschauer)
+
+Let me know what you think: [jan.rabe@kibotu.net](mailto:jan.rabe@kibotu.net)
+
+Contributions welcome!
 
 ## Contributors
 
